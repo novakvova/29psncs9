@@ -2,6 +2,7 @@ import React from 'react';
 import timezones from '../../data/timezones';
 import map from 'lodash/map';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 class SignupForm extends React.Component {
     constructor(props) {
@@ -11,7 +12,9 @@ class SignupForm extends React.Component {
             email: '',
             password: '',
             passwordConfirmation: '',
-            timezone: ''
+            timezone: '',
+            errors: {},
+            isLoading: false
         };
         this.onChange=this.onChange.bind(this);
         this.onSubmit=this.onSubmit.bind(this);
@@ -26,17 +29,24 @@ class SignupForm extends React.Component {
     onSubmit(e) {
         e.preventDefault();
         console.log("---this state---", this.state);
-        this.props.userSignupRequest(this.state);
+        this.props.userSignupRequest(this.state).then(
+            () => {},
+            (err) => {
+                 //console.log(err.response.data);
+                 this.setState({errors: err.response.data.errors});
+            }
+        );
     }
 
     render() {
         const options = map(timezones, (val, key) =>
             <option key={val} value={val}>{key}</option>
         );
+        const { errors } = this.state;
         return (
             <form onSubmit={this.onSubmit}>
                 <h1>Signup Form</h1>
-                <div className="form-group">
+                <div className= {classnames("form-group", {'has-error': errors.username})}>
                     <label className="control-label">UserName</label>
                     <input
                         value={this.state.username}
@@ -45,6 +55,7 @@ class SignupForm extends React.Component {
                         name="username"
                         className="form-control"
                     />
+                    {errors.username && <span className="help-block">{errors.username}</span> }
                 </div>
 
                 <div className="form-group">
