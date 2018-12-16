@@ -1,5 +1,10 @@
 import React from 'react';
 import TextFieldGroup from '../common/TextFieldGroup';
+import { login } from '../../actions/login';
+//Використовується для передачі даних компоненту через props
+import { connect } from 'react-redux';
+//Для перевірки props компонента
+import PropTypes from 'prop-types';
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -26,7 +31,8 @@ class LoginForm extends React.Component {
         setTimeout(f => {
             this.setState({errors: {}, isLoading: false});
             console.log("Hello submit complete", this.state);
-        }, 10000);
+            this.context.router.push('/');
+        }, 5000);
         
     }
 
@@ -63,4 +69,12 @@ class LoginForm extends React.Component {
     }
 }
 
-export default LoginForm;
+LoginForm.propTypes = {
+    login: PropTypes.func.isRequired
+}
+
+LoginForm.contextTypes = {
+    router: PropTypes.object.isRequired
+}
+
+export default connect(null, { login })(LoginForm);
