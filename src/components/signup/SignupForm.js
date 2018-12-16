@@ -3,6 +3,7 @@ import timezones from '../../data/timezones';
 import map from 'lodash/map';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import TextFieldGroup from '../common/TextFieldGroup';
 
 class SignupForm extends React.Component {
     constructor(props) {
@@ -46,50 +47,40 @@ class SignupForm extends React.Component {
         return (
             <form onSubmit={this.onSubmit}>
                 <h1>Signup Form</h1>
-                <div className= {classnames("form-group", {'has-error': errors.username})}>
-                    <label className="control-label">UserName</label>
-                    <input
-                        value={this.state.username}
-                        onChange={this.onChange}
-                        type="text"
-                        name="username"
-                        className="form-control"
-                    />
-                    {errors.username && <span className="help-block">{errors.username}</span> }
-                </div>
+                <TextFieldGroup
+                    error={errors.username}
+                    label="Username"
+                    onChange={this.onChange}
+                    value={this.state.username}
+                    field="username"
+                />
 
-                <div className="form-group">
-                    <label className="control-label">Email</label>
-                    <input
-                        value={this.state.email}
-                        onChange={this.onChange}
-                        type="text"
-                        name="email"
-                        className="form-control"
-                    />
-                </div>
+                <TextFieldGroup
+                    error={errors.email}
+                    label="Email"
+                    onChange={this.onChange}
+                    value={this.state.email}
+                    field="email"
+                    type="email"
+                />
 
-                <div className="form-group">
-                    <label className="control-label">Password</label>
-                    <input
-                        value={this.state.password}
-                        onChange={this.onChange}
-                        type="password"
-                        name="password"
-                        className="form-control"
-                    />
-                </div>
+                <TextFieldGroup
+                    error={errors.password}
+                    label="Password"
+                    onChange={this.onChange}
+                    value={this.state.password}
+                    field="password"
+                    type="password"
+                />
 
-                <div className="form-group">
-                    <label className="control-label">Password Confirmation</label>
-                    <input
-                        value={this.state.passwordConfirmation}
-                        onChange={this.onChange}
-                        type="password"
-                        name="passwordConfirmation"
-                        className="form-control"
-                    />
-                </div>
+                <TextFieldGroup
+                    error={errors.passwordConfirmation}
+                    label="Password Confirmation"
+                    onChange={this.onChange}
+                    value={this.state.passwordConfirmation}
+                    field="passwordConfirmation"
+                    type="password"
+                />
 
                 <div className="form-group">
                     <label className="control-label">Timesone</label>
