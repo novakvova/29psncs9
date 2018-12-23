@@ -1,6 +1,6 @@
 import React from 'react';
 import TextFieldGroup from '../common/TextFieldGroup';
-import { login } from '../../actions/login';
+import { login } from '../../actions/authActions';
 //Використовується для передачі даних компоненту через props
 import { connect } from 'react-redux';
 //Для перевірки props компонента
@@ -27,12 +27,21 @@ class LoginForm extends React.Component {
         e.preventDefault();
         this.setState({errors: {}, isLoading: true});
         console.log("Hello submit", this.state);
+        this.props.login(this.state).then(
+            ()=>this.context.router.push('/'),
+            (error) => {
+                var data=error.response.data;
+                this.setState({errors: data.errors, isLoading: false});
+                console.log(data);
+            }
+        );
         //var self=this;
-        setTimeout(f => {
-            this.setState({errors: {}, isLoading: false});
-            console.log("Hello submit complete", this.state);
-            this.context.router.push('/');
-        }, 5000);
+
+        // setTimeout(f => {
+        //     this.setState({errors: {}, isLoading: false});
+        //     console.log("Hello submit complete", this.state);
+        //     this.context.router.push('/');
+        // }, 5000);
         
     }
 
@@ -42,7 +51,7 @@ class LoginForm extends React.Component {
         return (
             <form onSubmit={this.onSubmit}>
                 <h1>Login</h1>
-
+                {errors.form && <div className="alert alert-danger">{errors.form}</div>}
                 <TextFieldGroup
                     field="email"
                     label="Email"
